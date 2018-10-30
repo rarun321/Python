@@ -1,10 +1,7 @@
 from tkinter import *
 import pyodbc
 import matplotlib.pyplot as plt
-
-
-squarefeet =0
-dollars =0
+import numpy as np 
 
 def callingallsnakes():
     functionCobra()
@@ -25,14 +22,49 @@ def functionViper():
       global dollars
       dollars = cursor.fetchall()
       connection.close()     
- 
-def graph():
-    global squarefeet
-    x = squarefeet
-    global dollars
-    y = dollars
-    plt.scatter(x,y,marker="o")
-    plt.show();
+
+def estimateco(x,y):
+    n = np.size(x) 
+  
+    # mean of x and y vector 
+    m_x, m_y = np.mean(x), np.mean(y) 
+  
+    # calculating cross-deviation and deviation about x 
+    SS_xy = np.sum(y*x - n*m_y*m_x) 
+    SS_xx = np.sum(x*x - n*m_x*m_x)  
+  
+    # calculating regression coefficients 
+    b_1 = SS_xy / SS_xx 
+    b_0 = m_y - b_1*m_x 
+    return(b_0, b_1) 
+
+def graph(x,y,b):
+    plt.scatter(x, y, color = "m",  marker = "o", s = 30)  
+    # predicted response vector 
+    y_pred = b[0] + b[1]*x 
+    li = plt.plot(x, y_pred, color = "g") 
+    print(li[0].get_data())
+    plt.xlabel('Square Feet') 
+    plt.ylabel('Dollars') 
+    plt.show()
+    
+def pythongraph():
+     callingallsnakes()
+     x = np.array(squarefeet)
+     y = np.array(dollars)
+     b = estimateco(x,y)
+     graph(x,y,b)
+  
+def prediction():
+     callingallsnakes()
+     x = np.array(squarefeet)
+     y = np.array(dollars)
+     b = estimateco(x,y)
+     global inputsF
+     output = int(inputsF.get("1.0",END))
+     d = (output*b[1])+b[0]
+     global predictlabel
+     predictlabel.config(text=d)
 
 def mainframe():
     root = Tk()
@@ -51,8 +83,21 @@ def mainframe():
     global commandlabel
     commandlabel = Label(root, text="")
     commandlabel.place(relx=0.50, rely=0.50, anchor='center')
-    graph()
+    global linearreg 
+    linearreg = Button(root, text="Linear Regression Graph", width= 25, command=pythongraph)
+    linearreg.place(relx=0.50, rely=0.60, anchor='center')
+    global inputsF
+    inputsF = Text(root,height=1,width=25)
+    inputsF.place(relx=0.50, rely=0.75, anchor='center')
+    global predictamount 
+    predictamount = Button(root, text="Predict", width= 25, command=prediction)
+    predictamount.place(relx=0.50, rely=.80, anchor='center')
+    global predictlabel
+    predictlabel = Label(root, text="")
+    predictlabel.place(relx=0.50, rely=0.85, anchor='center')
     root.mainloop()
+
+    
 
 def functionAndaconda():
    connection = pyodbc.connect('Trusted_Connection=yes', driver='{SQL Server}',server='RITHVIK-LAPTOP\RITHVIKSSQL', database='Python')
@@ -65,11 +110,9 @@ def functionAndaconda():
    global commandlabel
    commandlabel.config(text="Record Saved")
    connection.commit() 
-   connection.close()
-   callingallsnakes()
+   connection.close()  
    
+  
 
-   
-      
 
 mainframe()
