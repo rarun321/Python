@@ -72,12 +72,16 @@ def mainframe():
     global headinglabel
     headinglabel = Label(root, text="Python", width=25, font=("Courier", 44))
     headinglabel.place(relx=0.5, rely=0.1, anchor='center')
-    global textname
-    textname = Text(root,height=1,width=25)
-    textname.place(relx=0.50, rely=0.25, anchor='center')
-    global textage
-    textage = Text(root,height=1,width=25)
-    textage.place(relx=0.50, rely=0.35, anchor='center')
+    global textsquarefeet
+    textsquarefeet = Text(root,height=1,width=25)
+    textsquarefeet.place(relx=0.50, rely=0.25, anchor='center')
+    sflabel = Label(root,text="SquareFeet:")
+    sflabel.place(relx=0.20, rely=0.25, anchor='center')
+    global textdollars
+    textdollars = Text(root,height=1,width=25)
+    textdollars.place(relx=0.50, rely=0.35, anchor='center')
+    dlabel = Label(root,text="Dollars:")
+    dlabel.place(relx=0.20, rely=0.35, anchor='center')
     buttonidk = Button(root, text="Send to Database", width=25, command=functionAndaconda)
     buttonidk.place(relx=0.50, rely=0.45, anchor='center')
     global commandlabel
@@ -89,6 +93,8 @@ def mainframe():
     global inputsF
     inputsF = Text(root,height=1,width=25)
     inputsF.place(relx=0.50, rely=0.75, anchor='center')
+    labelpredsF = Label(root,text="SquareFeet")
+    labelpredsF.place(relx=0.20, rely=0.75, anchor='center')
     global predictamount 
     predictamount = Button(root, text="Predict", width= 25, command=prediction)
     predictamount.place(relx=0.50, rely=.80, anchor='center')
