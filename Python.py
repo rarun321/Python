@@ -27,15 +27,15 @@ def estimateco(x,y):
     n = np.size(x) 
   
     # mean of x and y vector 
-    m_x, m_y = np.mean(x), np.mean(y) 
+    meanx, meany = np.mean(x), np.mean(y) 
   
     # calculating cross-deviation and deviation about x 
-    SS_xy = np.sum(y*x - n*m_y*m_x) 
-    SS_xx = np.sum(x*x - n*m_x*m_x)  
+    xy = np.sum(y*x - n*meany*meanx) 
+    xx = np.sum(x*x - n*meanx*meanx)  
   
     # calculating regression coefficients 
-    b_1 = SS_xy / SS_xx 
-    b_0 = m_y - b_1*m_x 
+    b_1 = xy / xx 
+    b_0 = meany - b_1*meanx 
     return(b_0, b_1) 
 
 def graph(x,y,b):
@@ -111,7 +111,7 @@ def functionAndaconda():
    global textname
    global textage   
    SQLCommand = ("INSERT INTO PyHouse " "(squareFeet,dollars ) " "VALUES (?,?)") 
-   Values = [int(textname.get("1.0",END)), int(textage.get("1.0",END))] 
+   Values = [int(textsquarefeet.get("1.0",END)), int(textdollars.get("1.0",END))] 
    cursor.execute(SQLCommand,Values) 
    global commandlabel
    commandlabel.config(text="Record Saved")
